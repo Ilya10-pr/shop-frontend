@@ -1,0 +1,19 @@
+.register{
+  margin: 0 auto;
+  margin-top: 150px;
+  max-width: 500px;
+  padding: 10px;
+  border: 1px solid #6E473B;
+  border-radius: 10px;
+  box-shadow: 4px 4px 25px 0px #6E473B;
+
+  .btn{
+    border: #6E473B;
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #6E473B;
+    &:hover{
+      background-color: #644339;
+    }
+  }
+}

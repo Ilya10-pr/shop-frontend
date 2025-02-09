@@ -1,0 +1,20 @@
+.bg{
+  background-color: #6E473B;
+  font-size: large;
+  margin-bottom: 10px;
+  
+  .nav{
+    max-width: 1500px;
+  }
+  .avatar {
+    margin-left: 10px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    object-fit: cover; /* Сохраняет пропорции изображения */
+  }
+
+
+
+}
+ 
