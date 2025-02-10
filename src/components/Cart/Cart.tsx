@@ -1,31 +1,47 @@
 import { Button, Card, Container } from "react-bootstrap";
 import StarRating from "../StarRating/StarRating";
 import style from "./Cart.module.scss"
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteProductFromCart, getProductFromCart } from "../../services/ProductServices";
 import { GrClose } from "react-icons/gr";
 import { IProduct } from "../../types/types";
+import { useAppDispatch } from "../../store/store";
+import { updateCountCart } from "../../store/auth/authSlice";
 
 
 
 
 const Cart = () => {
+  const reset = useQueryClient()
+  const dispatch = useAppDispatch()
 
   const { data: cartUser } = useQuery({ queryKey: ['cart',], queryFn: () => getProductFromCart() });
 
-  
-  if (!cartUser) {
-    return (
-      <div>Product not found</div>
-    )
-  }
-  const cart = cartUser[0].productsCart
-  
-  const deleteProduct = (productId: string) => {
-    deleteProductFromCart(productId)
+  if(cartUser?.length === 0) {
+    return <div>Product not found</div>
   }
 
-  return (cart.map((product) => (
+  
+  const deleteProduct = async (productId: string) => {
+    const previousCart = reset.getQueryData<IProduct[]>(['cart']);
+
+    reset.setQueryData(['cart'], (oldData: IProduct[]) => {
+      if (!oldData) return null;
+      const newData = oldData.filter((product) => product._id !== productId);
+      return newData
+    });
+
+    try {
+      const response = await deleteProductFromCart(productId)
+      dispatch(updateCountCart(response.length))
+      await reset.invalidateQueries({ queryKey: ['cart'] })
+    } catch (error) {
+      reset.setQueryData(['cart'], previousCart);
+      console.log('Error deleting product:', error)
+    }
+  }
+
+  return (cartUser?.map((product) => (
     <Container key={product._id} className={style.wrapper}>
       <Card className={style.product}>
         <Card.Body>

@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IAuth, IUser } from '../types/types';
+import { IAuth, IUser } from '../../types/types';
 import { authMeThunk, loginUserThunk, registerUserThunk } from './authThunk';
-import { authMe } from '../services/ProductServices';
 
 
 const initialState: IAuth = {
@@ -13,7 +12,13 @@ const initialState: IAuth = {
 const authSlice = createSlice({
   name: 'auth', 
   initialState, 
-  reducers: {},
+  reducers: {
+    updateCountCart : (state, action: PayloadAction<number>) => {
+      if(state.auth){
+        state.auth.productCount = action.payload
+      }
+    }
+  },
   extraReducers:  (builder) => {
     builder
       .addCase(registerUserThunk.pending, (state) => {
@@ -58,7 +63,7 @@ const authSlice = createSlice({
 
 
 
-export const {} = authSlice.actions;
+export const {updateCountCart} = authSlice.actions;
 
 export default authSlice.reducer
 

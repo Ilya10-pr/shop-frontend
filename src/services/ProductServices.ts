@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { IFormLogin, IFormRegister, IProduct, IUser } from "../types/types";
+import { ICartResponse, IFormLogin, IFormRegister, IProduct, IUser } from "../types/types";
 // import { IProduct, IProduct2, IProductResponse } from "../types/ProductInterface";
 
 
@@ -41,23 +41,17 @@ export const getProductById = (id: string): Promise<IProduct> => {
 }
 
 
-export const addProductToCart = async(product: IProduct) => {
-  const response = await instance.post("cart", product);
-  return response
+export const addProductToCart = async(product: IProduct): Promise<IProduct[]> => {
+  return await instance.post("cart", product).then((res) => res.data);
 }
 
 
-export interface IResponseCart{
-  _id: string;
-  productsCart: IProduct[];
-}
-
-export const deleteProductFromCart = (productId: string) => {
+export const deleteProductFromCart = (productId: string): Promise<IProduct[]> => {
   return instance.delete(`cart/${productId}`).then((res) => res.data);
 }
 
 
-export const getProductFromCart = (): Promise<IResponseCart[]> => {
+export const getProductFromCart = (): Promise<IProduct[]> => {
   return instance.get("cart").then((res) => res.data)
 }
 

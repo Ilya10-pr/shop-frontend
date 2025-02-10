@@ -6,7 +6,7 @@ import Button from "react-bootstrap/esm/Button";
 import Stack from 'react-bootstrap/Stack';
 import style from "./Register.module.scss"
 import { useAppDispatch } from "../../store/store";
-import { registerUserThunk } from "../../store/authThunk";
+import { registerUserThunk } from "../../store/auth/authThunk";
 
 
 const Register: FC = () => {

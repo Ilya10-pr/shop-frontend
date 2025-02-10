@@ -6,7 +6,7 @@ import style from "./NavBar.module.scss"
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../store/store';
 import { Badge, Col, Image } from 'react-bootstrap';
-
+import { useState } from 'react';
 
 
 const NavBar = () => {
@@ -43,7 +43,7 @@ const NavBar = () => {
                 <>
                   <Nav.Link  as={Link} to="/cart">
                     Cart 
-                    <Badge className="bg-secondary">9</Badge> // count in cart
+                    <Badge className="bg-secondary">{isAuth.productCount}</Badge> // count in cart
                   </Nav.Link>
                   <Col xs={6} md={4}>
                     <Image className={style.avatar} src={isAuth.avatar} roundedCircle />

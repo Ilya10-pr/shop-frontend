@@ -2,19 +2,25 @@ import { FC, useState } from "react";
 import { BsCart } from "react-icons/bs";
 import { CartButtonProps, IProduct } from "../../types/types";
 import { addProductToCart, deleteProductFromCart } from "../../services/ProductServices";
+import { useAppDispatch } from "../../store/store";
+import { updateCountCart } from "../../store/auth/authSlice";
 
 
 const CartButton: FC<CartButtonProps > = ({ itemId, product }) => {
   const [cart, setCart] = useState<string[]>([]);
+  const dispatch = useAppDispatch()
 
 
-  const toggleCart = (id: string, product: IProduct) => {
+  const toggleCart = async (id: string, product: IProduct) => {
     if (cart.includes(id)) {
       setCart(cart.filter((item) => item !== id));
-      deleteProductFromCart(id)
+      const response = await deleteProductFromCart(id)
+      dispatch(updateCountCart(response.length))
     } else {
       setCart([...cart, id]);
-      addProductToCart(product)
+      const response = await addProductToCart(product)
+      dispatch(updateCountCart(response.length))
+      
     }
   };
 

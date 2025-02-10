@@ -7,7 +7,7 @@ import style from "./Login.module.scss"
 import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../store/store';
-import { loginUserThunk } from '../../store/authThunk';
+import { loginUserThunk } from '../../store/auth/authThunk';
 
 
 const Login = () => {

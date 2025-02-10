@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { authMe, loginUser, registerNewUser } from "../services/ProductServices";
-import { IFormLogin, IFormRegister} from "../types/types";
+import { authMe, loginUser, registerNewUser } from "../../services/ProductServices";
+import { IFormLogin, IFormRegister} from "../../types/types";
 
 export const registerUserThunk = createAsyncThunk(
   "auth/registerUserThunk",

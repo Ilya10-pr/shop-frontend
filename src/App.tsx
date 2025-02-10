@@ -9,7 +9,7 @@ import ProductsCategory from "./components/ProductsCategory/ProductsCategory";
 import Home from "./components/Home/Home";
 import Register from "./components/Register/Register";
 import { useAppDispatch } from "./store/store";
-import { authMeThunk } from "./store/authThunk";
+import { authMeThunk } from "./store/auth/authThunk";
 import Product from "./components/Product/Product";
 
 

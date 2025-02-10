@@ -11,8 +11,9 @@ export interface IUser {
   email: string;
   password: string;
   avatar?: string;
-  role?: string[];
+  role?: string;
   token?:string;
+  productCount: number;
 }
 
 export interface IFormRegister {
@@ -49,4 +50,16 @@ export interface IAuth {
   auth: IUser | null;
   loading: boolean;
   error: string | null;
+}
+
+export interface ICartState {
+  cartUser: ICartResponse[] | null
+  isLoading: boolean;
+  isError: string | null;
+}
+
+export interface ICartResponse {
+  _id: string,
+  userId: string,
+  productsCart: IProduct[]
 }
