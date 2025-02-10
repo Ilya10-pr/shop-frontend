@@ -2,23 +2,30 @@ import { Button, Card, Container } from "react-bootstrap";
 import StarRating from "../StarRating/StarRating";
 import style from "./Cart.module.scss"
 import { useQuery } from "@tanstack/react-query";
-import { getProductFromCart } from "../../services/ProductServices";
+import { deleteProductFromCart, getProductFromCart } from "../../services/ProductServices";
 import { GrClose } from "react-icons/gr";
+import { IProduct } from "../../types/types";
 
 
 
 
 const Cart = () => {
 
-  const { data: cartUser } = useQuery({ queryKey: ['cartUser',], queryFn: () => getProductFromCart() });
+  const { data: cartUser } = useQuery({ queryKey: ['cart',], queryFn: () => getProductFromCart() });
 
+  
   if (!cartUser) {
     return (
       <div>Product not found</div>
     )
   }
+  const cart = cartUser[0].productsCart
+  
+  const deleteProduct = (productId: string) => {
+    deleteProductFromCart(productId)
+  }
 
-  return (cartUser.map((product) => (
+  return (cart.map((product) => (
     <Container key={product._id} className={style.wrapper}>
       <Card className={style.product}>
         <Card.Body>
@@ -45,8 +52,9 @@ const Cart = () => {
               height: 30,
               marginTop: 15
             }}
+            onClick={() => deleteProduct(product._id)}
           >
-            <GrClose style={{ width: 30, height: 30, color: 'red' }} />
+            <GrClose style={{ width: 30, height: 30, color: "6E473B" }} />
           </Button>
         </Container>
         <Button>Buy</Button>

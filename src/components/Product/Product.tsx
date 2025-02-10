@@ -64,7 +64,7 @@ const Product = () => {
       </Container>
       <Container className={style.option}>
         <StarRating />
-        {stock ? <CartButton itemId={product._id} /> : null}
+        {stock ? <CartButton itemId={product._id} product={product} /> : null}
         <Card.Title>Number of sales: 101</Card.Title> // count of sales
       </Container>
       

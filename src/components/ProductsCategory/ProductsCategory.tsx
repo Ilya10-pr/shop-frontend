@@ -18,7 +18,7 @@ const ProductsCategory  = () => {
     }}>
     <Row>
       {isLoading ? <div>Loading...</div> : category?.map((product) => (
-        <Col key={product.id} xs={12} sm={6} md={4} lg={4}  className="mb-4">
+        <Col key={product._id} xs={12} sm={6} md={4} lg={4}  className="mb-4">
           <ProductCard product={product} />
         </Col>
       ))}

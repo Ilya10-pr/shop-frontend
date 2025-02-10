@@ -1,20 +1,20 @@
 import { FC, useState } from "react";
 import { BsCart } from "react-icons/bs";
-import { CartButtonProps } from "../../types/types";
+import { CartButtonProps, IProduct } from "../../types/types";
 import { addProductToCart, deleteProductFromCart } from "../../services/ProductServices";
 
 
-const CartButton: FC<CartButtonProps> = ({ itemId }) => {
+const CartButton: FC<CartButtonProps > = ({ itemId, product }) => {
   const [cart, setCart] = useState<string[]>([]);
 
-  const toggleCart = (id: string) => {
+
+  const toggleCart = (id: string, product: IProduct) => {
     if (cart.includes(id)) {
       setCart(cart.filter((item) => item !== id));
       deleteProductFromCart(id)
     } else {
       setCart([...cart, id]);
-      const data = {productId: id}
-      addProductToCart(data)
+      addProductToCart(product)
     }
   };
 
@@ -25,7 +25,7 @@ const CartButton: FC<CartButtonProps> = ({ itemId }) => {
       <input
         type="checkbox"
         checked={isInCart}
-        onChange={() => toggleCart(itemId)}
+        onChange={() => toggleCart(itemId, product)}
         style={{ display: "none" }}
       />
       <span

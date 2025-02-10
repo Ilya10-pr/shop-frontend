@@ -41,19 +41,24 @@ export const getProductById = (id: string): Promise<IProduct> => {
 }
 
 
-export const addProductToCart = async(data: {productId: string}) => {
-  const response = await instance.post("cart", data);
+export const addProductToCart = async(product: IProduct) => {
+  const response = await instance.post("cart", product);
   return response
 }
 
+
+export interface IResponseCart{
+  _id: string;
+  productsCart: IProduct[];
+}
 
 export const deleteProductFromCart = (productId: string) => {
   return instance.delete(`cart/${productId}`).then((res) => res.data);
 }
 
 
-export const getProductFromCart = () => {
-  return instance.get<IProduct[]>("cart").then((res) => res.data);;
+export const getProductFromCart = (): Promise<IResponseCart[]> => {
+  return instance.get("cart").then((res) => res.data)
 }
 
 
