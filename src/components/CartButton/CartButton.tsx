@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { BsCart } from "react-icons/bs";
 import { CartButtonProps, IProduct } from "../../types/types";
-import { addProductToCart, deleteProductFromCart } from "../../services/ProductServices";
 import { useAppDispatch } from "../../store/store";
 import { updateCountCart } from "../../store/auth/authSlice";
+import { addProductToCartThunk, deleteProductFromCartThunk } from "../../store/cart/cartThunk";
 
 
 const CartButton: FC<CartButtonProps > = ({ itemId, product }) => {
@@ -14,13 +14,12 @@ const CartButton: FC<CartButtonProps > = ({ itemId, product }) => {
   const toggleCart = async (id: string, product: IProduct) => {
     if (cart.includes(id)) {
       setCart(cart.filter((item) => item !== id));
-      const response = await deleteProductFromCart(id)
-      dispatch(updateCountCart(response.length))
+      dispatch(deleteProductFromCartThunk(id))
+      // dispatch(updateCountCart(response.length))
     } else {
       setCart([...cart, id]);
-      const response = await addProductToCart(product)
-      dispatch(updateCountCart(response.length))
-      
+      dispatch(addProductToCartThunk({productId: id}))
+      // dispatch(updateCountCart(response.length))
     }
   };
 

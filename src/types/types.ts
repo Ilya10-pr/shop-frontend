@@ -14,6 +14,7 @@ export interface IUser {
   role?: string;
   token?:string;
   productCount: number;
+  amount: number
 }
 
 export interface IFormRegister {
@@ -25,12 +26,16 @@ export interface IFormRegister {
 
 
 export interface IProduct{
-  _id: string;
+  _id: string; 
   name: string;
   description: string;
-  price: number;
   image: string;
+  price: number;
   category: string;
+  color: string;
+  ram: number;
+  rating: number;
+  isStock: boolean
 }
 
 
@@ -53,13 +58,21 @@ export interface IAuth {
 }
 
 export interface ICartState {
-  cartUser: ICartResponse[] | null
+  cartUser: IProduct[] | null
   isLoading: boolean;
   isError: string | null;
 }
 
-export interface ICartResponse {
-  _id: string,
-  userId: string,
-  productsCart: IProduct[]
+export interface IProductState {
+  allProducts: IProduct[] | null,
+  selectedProduct: IProduct | null
+  isLoading: boolean;
+  isError: string | null;
 }
+
+export interface IOptionProduct{
+  name: string;
+  color: string;
+  ram: number;
+}
+

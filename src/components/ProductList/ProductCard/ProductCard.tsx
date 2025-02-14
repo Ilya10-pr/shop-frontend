@@ -12,7 +12,7 @@ const ProductCard: FC<{ product: IProduct }> = ({ product }) => {
       <Card.Body>
         <Nav.Link as={Link} to={`/products/${product._id}`}>
           <Card.Img variant="top" src={product.image} />
-          <Card.Title>{product.name}</Card.Title>
+          <Card.Title>{product.name} {product.ram} GB</Card.Title>
         </Nav.Link>
         <Card.Text>{new Intl.NumberFormat('en-US', {
           style: 'currency',

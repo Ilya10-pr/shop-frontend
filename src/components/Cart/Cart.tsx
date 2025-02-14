@@ -1,21 +1,28 @@
 import { Button, Card, Container } from "react-bootstrap";
-import StarRating from "../StarRating/StarRating";
+import RatingButton from "../StarRating/RatingButton";
 import style from "./Cart.module.scss"
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteProductFromCart, getProductFromCart } from "../../services/ProductServices";
 import { GrClose } from "react-icons/gr";
-import { IProduct } from "../../types/types";
-import { useAppDispatch } from "../../store/store";
-import { updateCountCart } from "../../store/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { memo, useEffect } from "react";
+import { deleteProductFromCartThunk, getCartUserThunk } from "../../store/cart/cartThunk";
 
 
 
 
-const Cart = () => {
-  const reset = useQueryClient()
+const Cart = memo(() => {
   const dispatch = useAppDispatch()
+  const cartUser = useAppSelector((state) => {
+    if(state.cart.cartUser){
+      return state.cart.cartUser
+    } else {
+      return null
+    }
+  })
 
-  const { data: cartUser } = useQuery({ queryKey: ['cart',], queryFn: () => getProductFromCart() });
+  useEffect(() => {
+    dispatch(getCartUserThunk())
+  }, [])
+
 
   if(cartUser?.length === 0) {
     return <div>Product not found</div>
@@ -23,23 +30,16 @@ const Cart = () => {
 
   
   const deleteProduct = async (productId: string) => {
-    const previousCart = reset.getQueryData<IProduct[]>(['cart']);
-
-    reset.setQueryData(['cart'], (oldData: IProduct[]) => {
-      if (!oldData) return null;
-      const newData = oldData.filter((product) => product._id !== productId);
-      return newData
-    });
 
     try {
-      const response = await deleteProductFromCart(productId)
-      dispatch(updateCountCart(response.length))
-      await reset.invalidateQueries({ queryKey: ['cart'] })
+      dispatch(deleteProductFromCartThunk(productId))
+      // dispatch(updateCountCart(response.length))
     } catch (error) {
-      reset.setQueryData(['cart'], previousCart);
       console.log('Error deleting product:', error)
     }
   }
+
+
 
   return (cartUser?.map((product) => (
     <Container key={product._id} className={style.wrapper}>
@@ -58,7 +58,10 @@ const Cart = () => {
       </Container>
       <Container className={style.option}>
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
-          <StarRating />
+          <Container>
+            <RatingButton productId={product._id}/>
+            <Card.Title>{product.rating > 0 ? `Rating: ${product.rating}` : "No rating"}</Card.Title>
+          </Container>
           <Button
             style={{
               border: 'none',
@@ -73,13 +76,13 @@ const Cart = () => {
             <GrClose style={{ width: 30, height: 30, color: "6E473B" }} />
           </Button>
         </Container>
-        <Button>Buy</Button>
+        <Button onClick={() => deleteProduct(product._id)}>Buy</Button>
       </Container>
     </Container>
   ))
 
 
   )
-}
+})
 
 export default Cart;

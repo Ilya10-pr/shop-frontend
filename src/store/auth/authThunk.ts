@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { authMe, loginUser, registerNewUser } from "../../services/ProductServices";
+import { authMe, loginUser, registerNewUser, updateUser } from "../../services/AuthServices";
 import { IFormLogin, IFormRegister} from "../../types/types";
+import { getCartUserThunk } from "../cart/cartThunk";
 
 export const registerUserThunk = createAsyncThunk(
   "auth/registerUserThunk",
@@ -9,7 +10,6 @@ export const registerUserThunk = createAsyncThunk(
     if(response.token){
       window.localStorage.setItem("token", response.token)
     }
-
     return response;
   }
 );
@@ -19,7 +19,6 @@ export const loginUserThunk = createAsyncThunk(
   "auth/loginUserThunk",
   async (body: IFormLogin) => {
     const response = await loginUser(body);
-    console.log(response)
     if(response.token){
       window.localStorage.setItem("token", response.token)
     }
@@ -29,12 +28,23 @@ export const loginUserThunk = createAsyncThunk(
 
 export const authMeThunk = createAsyncThunk(
   "auth/authMeThunk",
-  async () => {
+  async (_, {dispatch}) => {
     const response = await authMe();
+    if(response){
+          dispatch(getCartUserThunk())
+        }
     return response;
   }
 );
 
+
+export const updateUserThunk = createAsyncThunk(
+  "auth/updateUserThunk",
+  async(payload: {amount: number}) => {
+    const response = await updateUser(payload)
+    return response 
+  }
+)
 
 
 

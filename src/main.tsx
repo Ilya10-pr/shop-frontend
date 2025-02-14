@@ -7,12 +7,11 @@ import { Provider } from 'react-redux';
 import store from './store/store.ts';
 
 const queryClient = new QueryClient();
-
 createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
         <Router>
             <Provider store={store}>
-                <App />
+                    <App />
             </Provider>
         </Router>
     </QueryClientProvider>

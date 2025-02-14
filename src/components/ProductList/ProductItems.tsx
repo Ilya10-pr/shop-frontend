@@ -1,13 +1,23 @@
-import { FC } from "react";
-import { getProducts } from "../../services/ProductServices.ts";
+import { FC, memo, useEffect } from "react";
 import ProductCard from "./ProductCard/ProductCard.tsx";
 import { Container, Row, Col } from 'react-bootstrap';
-import { useQuery } from "@tanstack/react-query";
+import { useAppDispatch, useAppSelector } from "../../store/store.ts";
+import { getProductsThunk } from "../../store/product/productsThunk.ts";
 
 
-const ProductItem: FC = () => {
+const ProductItem: FC = memo(() => {
 
-  const { data: products, isLoading } = useQuery({ queryKey: ['products'], queryFn: () => getProducts()});
+  const products = useAppSelector((state) => {
+    if(state.products.allProducts){
+      return state.products.allProducts
+    }
+    return null
+  })
+
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(getProductsThunk())
+  }, [])
 
 
   return (
@@ -15,7 +25,7 @@ const ProductItem: FC = () => {
       maxWidth: '720px',
       }}>
       <Row>
-        {isLoading ? <div>Loading...</div> :products?.map((product) => (
+        {!products ? <div>Loading...</div> :products?.map((product) => (
           <Col key={product._id} xs={12} sm={6} md={4} lg={4}  className="mb-4">
             <ProductCard product={product} />
           </Col>
@@ -23,9 +33,6 @@ const ProductItem: FC = () => {
       </Row>
     </Container>
 )
-
-
-
-};
+});
 
 export default ProductItem;
