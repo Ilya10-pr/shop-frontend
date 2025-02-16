@@ -4,33 +4,35 @@ import { CartButtonProps, IProduct } from "../../types/types";
 import { useAppDispatch } from "../../store/store";
 import { updateCountCart } from "../../store/auth/authSlice";
 import { addProductToCartThunk, deleteProductFromCartThunk } from "../../store/cart/cartThunk";
+import { Button } from "react-bootstrap";
+import style from "./CartButton.module.scss"
 
 
-const CartButton: FC<CartButtonProps > = ({ itemId, product }) => {
+const CartButton: FC<CartButtonProps > = ({ itemId }) => {
   const [cart, setCart] = useState<string[]>([]);
   const dispatch = useAppDispatch()
 
 
-  const toggleCart = async (id: string, product: IProduct) => {
+  const toggleCart = async (id: string) => {
     if (cart.includes(id)) {
       setCart(cart.filter((item) => item !== id));
       dispatch(deleteProductFromCartThunk(id))
-      // dispatch(updateCountCart(response.length))
     } else {
       setCart([...cart, id]);
       dispatch(addProductToCartThunk({productId: id}))
-      // dispatch(updateCountCart(response.length))
     }
   };
 
   const isInCart = cart.includes(itemId);
 
   return (
+    <Button className={style.btn}>
+      Add to cart
     <label>
       <input
         type="checkbox"
         checked={isInCart}
-        onChange={() => toggleCart(itemId, product)}
+        onChange={() => toggleCart(itemId)}
         style={{ display: "none" }}
       />
       <span
@@ -40,9 +42,10 @@ const CartButton: FC<CartButtonProps > = ({ itemId, product }) => {
           color: isInCart ? "gold" : "gray", 
         }}
       >
-        <BsCart />
       </span>
     </label>
+    </Button>
+    
   );
 };
 

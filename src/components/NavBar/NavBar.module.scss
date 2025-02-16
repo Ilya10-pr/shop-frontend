@@ -1,9 +1,26 @@
-.bg{
-  background-color: #6E473B;
+.bg.bg{
+  background-color: #000000;
   font-size: large;
   margin-bottom: 10px;
-  
-  .nav{
+  a{
+    color: white;
+
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .dropdown {
+    color: white;
+
+    a {
+      color: white;
+    }
+    .item{
+      color: #000000;
+    }
+
+  }
+  .nav.nav{
     max-width: 1500px;
   }
   .avatar {
@@ -13,8 +30,6 @@
     height: 40px;
     object-fit: cover; /* Сохраняет пропорции изображения */
   }
-
-
-
 }
- 
+
+

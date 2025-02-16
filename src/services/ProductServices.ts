@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { IFormLogin, IFormRegister, IOptionProduct, IProduct } from "../types/types";
 
 
-let instance: AxiosInstance = axios.create({
+const instance: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
@@ -13,6 +13,10 @@ export const getProducts = async (): Promise<IProduct[]> => {
   return instance.get("/products").then((res) => res.data);
 }
 
+
+export const getProductsByCategory = (brand: string): Promise<IProduct[]> => {
+  return instance.get(`products/category${brand}`).then((res) => res.data)
+}
 
 export const getProductsByOption = async (data: IOptionProduct): Promise<IProduct> => {
   return instance.get("products/option",  {
@@ -26,8 +30,12 @@ export const getProductById = (id: string): Promise<IProduct> => {
 }
 
 
-export const updateProduct = (productId: string, data: {value : number} | IProduct): Promise<IProduct[]> => {
+export const updateRatingProduct = (productId: string, data: {value : number} | IProduct): Promise<IProduct[]> => {
   return instance.put(`products/${productId}`, data).then((res) => res.data)
+}
+
+export const updateCountBuyProduct = (productId: string) => {
+  return instance.post(`products/buy/${productId}`).then((res) => res.data)
 }
 
 instance.interceptors.request.use((config) => {

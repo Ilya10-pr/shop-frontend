@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { IFormLogin, IFormRegister, IUser } from "../types/types";
 
 
-let instance: AxiosInstance = axios.create({
+const instance: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
@@ -22,7 +22,7 @@ export const authMe = (): Promise<IUser> => {
   return instance.get("auth/me").then((res) => res.data);
 }
 
-export const updateUser = (payload: {amount: number}): Promise<IUser> => {
+export const updateAmountUser = (payload: {amount: number}): Promise<IUser> => {
   return instance.post("user/amount", payload).then((res) => res.data)
 }
 

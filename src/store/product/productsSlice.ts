@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { getProductByIdThunk, getProductsByOptionThunk, getProductsThunk, updateProductThunk } from "./productsThunk"
+import { getProductByIdThunk, getProductsByOptionThunk, getProductsThunk, updateRatingProductThunk } from "./productsThunk"
 import { IProduct, IProductState } from "../../types/types"
 
 const initialState: IProductState = {
   allProducts: null,
   selectedProduct: null,
+  productsForEdit: null,
   isLoading: false,
   isError: null
 }
@@ -13,7 +14,11 @@ const initialState: IProductState = {
 const productsSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    setProductsForEdit: (state, action) => {
+      state.productsForEdit = state.allProducts ?  state.allProducts.filter((product) => product.name.toLowerCase().includes(action.payload.toLowerCase())): null
+    }
+  },
   extraReducers: (builder) => {
     builder
     .addCase(getProductsThunk.pending, (state) => {
@@ -58,16 +63,16 @@ const productsSlice = createSlice({
       state.isLoading = false
     })
 
-    .addCase(updateProductThunk.pending, (state) => {
+    .addCase(updateRatingProductThunk.pending, (state) => {
       state.isLoading = true
       state.isError = null
     })
-    .addCase(updateProductThunk.fulfilled, (state, action: PayloadAction<IProduct[]>) => {
+    .addCase(updateRatingProductThunk.fulfilled, (state, action: PayloadAction<IProduct[]>) => {
       state.allProducts = action.payload
       state.isLoading = false,
       state.isError = null
     })
-    .addCase(updateProductThunk.rejected, (state, action) => {
+    .addCase(updateRatingProductThunk.rejected, (state, action) => {
       state.isError = action.payload as string
       state.isLoading = false
     })
@@ -75,6 +80,6 @@ const productsSlice = createSlice({
 }) 
 
 
-export const {} = productsSlice.actions
+export const {setProductsForEdit} = productsSlice.actions
 
 export default productsSlice.reducer

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getProductById, getProducts, getProductsByOption, updateProduct } from "../../services/ProductServices";
+import { getProductById, getProducts, getProductsByOption, updateCountBuyProduct, updateRatingProduct } from "../../services/ProductServices";
 import { IOptionProduct, IProduct } from "../../types/types";
 import { getCartUserThunk } from "../cart/cartThunk";
 
@@ -29,11 +29,11 @@ export const getProductsByOptionThunk = createAsyncThunk(
   }
 )
 
-export const updateProductThunk = createAsyncThunk(
+export const updateRatingProductThunk = createAsyncThunk(
   "products/updateProductThunk",
   async(payload : {productId: string, data: {value: number} | IProduct}, {dispatch}) => {
     const {productId, data} = payload
-    const response = await updateProduct(productId, data);
+    const response = await updateRatingProduct(productId, data);
     if(response){
       dispatch(getCartUserThunk())
     }

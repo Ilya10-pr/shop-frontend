@@ -3,8 +3,9 @@ import Button from "react-bootstrap/esm/Button";
 import { useForm } from 'react-hook-form';
 import style from "./AmountUser.module.scss"
 import { useAppDispatch } from '../../store/store';
-import { updateUserThunk } from '../../store/auth/authThunk';
+import { updateAmountUserThunk } from '../../store/auth/authThunk';
 import { Stack } from 'react-bootstrap';
+import toast from 'react-hot-toast';
 
 
 export interface IAmount{
@@ -21,8 +22,12 @@ const AmountUser = () => {
   const dispatch = useAppDispatch()
 
 
-  const deposit = (data: IAmount) => {
-    dispatch(updateUserThunk(data))
+  const deposit = async (data: IAmount) => {
+    const response = await dispatch(updateAmountUserThunk(data))
+    if(response.payload) {
+      return toast.success("Balance replenished")
+    }
+    return toast.error("Couldn't top up")
 
   };
   return (

@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { IProduct } from "../types/types";
 
-let instance: AxiosInstance = axios.create({
+const instance: AxiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },

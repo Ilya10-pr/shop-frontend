@@ -2,47 +2,18 @@ import { Button, Card, Container } from "react-bootstrap";
 import RatingButton from "../StarRating/RatingButton";
 import style from "./Cart.module.scss"
 import { GrClose } from "react-icons/gr";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { memo, useEffect } from "react";
-import { deleteProductFromCartThunk, getCartUserThunk } from "../../store/cart/cartThunk";
+import { FC, memo} from "react";
+import { IProduct, IUser } from "../../types/types";
 
 
 
 
-const Cart = memo(() => {
-  const dispatch = useAppDispatch()
-  const cartUser = useAppSelector((state) => {
-    if(state.cart.cartUser){
-      return state.cart.cartUser
-    } else {
-      return null
-    }
-  })
-
-  useEffect(() => {
-    dispatch(getCartUserThunk())
-  }, [])
-
-
-  if(cartUser?.length === 0) {
-    return <div>Product not found</div>
-  }
-
-  
-  const deleteProduct = async (productId: string) => {
-
-    try {
-      dispatch(deleteProductFromCartThunk(productId))
-      // dispatch(updateCountCart(response.length))
-    } catch (error) {
-      console.log('Error deleting product:', error)
-    }
-  }
+const Cart: FC<{user: IUser, product: IProduct, deleteProduct: (productId: string) => void, buyProduct: (productId: string, productPrice: number) => void}> = memo(({user, product, deleteProduct, buyProduct}) => {
 
 
 
-  return (cartUser?.map((product) => (
-    <Container key={product._id} className={style.wrapper}>
+
+  return (<Container key={product._id} className={style.wrapper}>
       <Card className={style.product}>
         <Card.Body>
           <Card.Img variant="top" src={product.image} />
@@ -59,7 +30,7 @@ const Cart = memo(() => {
       <Container className={style.option}>
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
           <Container>
-            <RatingButton productId={product._id}/>
+            <RatingButton user={user} productId={product._id}/>
             <Card.Title>{product.rating > 0 ? `Rating: ${product.rating}` : "No rating"}</Card.Title>
           </Container>
           <Button
@@ -76,12 +47,9 @@ const Cart = memo(() => {
             <GrClose style={{ width: 30, height: 30, color: "6E473B" }} />
           </Button>
         </Container>
-        <Button onClick={() => deleteProduct(product._id)}>Buy</Button>
+        <Button onClick={() => buyProduct(product._id, product.price)}>Buy</Button>
       </Container>
     </Container>
-  ))
-
-
   )
 })
 

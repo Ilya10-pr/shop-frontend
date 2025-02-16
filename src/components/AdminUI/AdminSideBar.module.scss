@@ -5,19 +5,19 @@
   width: 230px;
   border: 1px solid #855344;
   border-radius: 10px;
-  box-shadow: inset 0 0 10px rgb(109, 68, 44); /* Внутренняя тень */
+  box-shadow: inset 0 0 10px rgb(0, 0, 0); /* Внутренняя тень */
 
 
   .btn.btn{
     display: block;
     margin: 10px auto;
-    background-color: #996150;
-    border-color: #996150;
+    background-color: #727171;
+    border: none;
     color: #000;
     width: 180px;
+    transition: outline 0.05s ease;
     &:hover {
-      background-color: #855344;
-      border-color: #996150;
+      outline: 2px solid black;
     }
   }
 }

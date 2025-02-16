@@ -1,11 +1,11 @@
 import { FC, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import Cart from "./components/Cart/Cart";
+import CartContainer from "./components/Cart/CartContainer";
 import ProductItem from "./components/ProductList/ProductItems";
 import About from "./components/About/About";
 import AuthRoot from "./components/AuthRoot/AuthRoot";
 import Layout from "./components/Layout/Layout";
-// import ProductsCategory from "./components/ProductsCategory/ProductsCategory";
+import ProductsCategory from "./components/ProductsCategory/ProductsCategory";
 import Home from "./components/Home/Home";
 import Register from "./components/Register/Register";
 import {useAppDispatch } from "./store/store";
@@ -27,15 +27,16 @@ const App = () => {
 
   return (
     <Layout>
+      
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/tablets" element={<ProductsCategory />} />
-        <Route path="/mens-watches" element={<ProductsCategory />} />
-        <Route path="/accessories" element={<ProductsCategory />} />
-        <Route path="/laptops" element={<ProductsCategory />} />
-        <Route path="/smartphones" element={<ProductsCategory />} /> */}
+        <Route path="/apple" element={<ProductsCategory />} />
+        <Route path="/xiaomi" element={<ProductsCategory />} />
+        <Route path="/samsung" element={<ProductsCategory />} />
+        <Route path="/honor" element={<ProductsCategory />} />
+        <Route path="/huawei" element={<ProductsCategory />} />
         <Route path="/products" element={<ProductItem />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={<CartContainer />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<AuthRoot />} />
         <Route path="/register" element={<Register />} />

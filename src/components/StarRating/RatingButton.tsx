@@ -1,63 +1,63 @@
 import { FC, useState } from "react";
-import { updateProduct } from "../../services/ProductServices";
 import { Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import style from "./RatingButton.module.scss"
 import { useAppDispatch } from "../../store/store";
-import { updateProductThunk } from "../../store/product/productsThunk";
+import { updateRatingProductThunk } from "../../store/product/productsThunk";
+import RatingStar from "./RatingStar";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { IComment, IUser } from "../../types/types";
+import { createComment } from "../../services/CommentServices";
 
-const RatingButton: FC<{ productId: string }> = ({ productId }) => {
+
+
+const RatingButton: FC<{ productId: string, user: IUser }> = ({ productId, user }) => {
+  const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [isModal, setIsModal] = useState<boolean>(false)
   const dispatch = useAppDispatch()
 
 
-  const handleRatingChange = (value: number) => {
+  const mutation = useMutation<IComment[], Error, IComment>({mutationFn: createComment,
+    onSuccess: () => {
+      toast.success("Thanks for the comment.")
+      setComment('');
+    },
+    onError: () => {
+      toast.success("Сouldn't send a comment, please try again later")
+    },
+  });
+
+
+  const sendRatingProduct = (rating: number) => {
     const payload = {
       productId: productId, 
-      data: {value: value}
+      data: {value: rating}
     }
-    dispatch(updateProductThunk(payload))
-    setRating(value);
+    const data: IComment = {
+      userId: user._id as string,
+      productId: productId,
+      countStar: rating,
+      description: comment,
+      avatar: user.avatar as string,
+      firstName: user.firstName
+
+    }
+    dispatch(updateRatingProductThunk(payload))
+    mutation.mutateAsync(data)
+    setIsModal(false)
   };
 
-  const openModal = () => {
-    setIsModal(true)
-  }
-
-  const closeModal = () => {
-    setIsModal(false)
-  }
-
   return (<>
-    <Button onClick={() => openModal()}>Leave a review</Button>
+    <Button onClick={() => setIsModal(true)}>Leave a review</Button>
     {isModal ?
       <div className={style.modal}>
         <div className={style.modal_content}>
-          <div>
-            {[1, 2, 3, 4, 5].map((value) => (
-              <label key={value}>
-                <input
-                  type="checkbox"
-                  checked={rating >= value}
-                  onChange={() => handleRatingChange(value)}
-                  style={{ display: "none" }}
-                />
-                <span
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "3rem",
-                    color: rating >= value ? "gold" : "gray",
-                  }}
-                >
-                  ★
-                </span>
-              </label>
-            ))}
-          </div>
+          <RatingStar rating={rating} setRating={setRating} />
           <Form.Label>Leave a comment</Form.Label>
-          <Form.Control as="textarea" />
-          <Button style={{marginTop: 10}} onClick={() => closeModal()}>Send feedback</Button>
+          <Form.Control value={comment} onChange={(event) => setComment(event?.target.value)} as="textarea" />
+          <Button style={{marginTop: 10}} onClick={() => sendRatingProduct(rating)}>Send feedback</Button>
         </div>
       </div> : null}
   </>

@@ -1,0 +1,12 @@
+.btn.btn{
+    background-color: #727171;
+    border: none;
+    color: #000;
+    transition: outline 0.05s ease;
+
+  &:hover{
+    outline: 2px solid black;
+    background-color: #727171;
+    color: #000;
+  }
+}

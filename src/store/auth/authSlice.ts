@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IAuth, IUser } from '../../types/types';
-import { authMeThunk, loginUserThunk, registerUserThunk, updateUserThunk } from './authThunk';
+import { authMeThunk, loginUserThunk, registerUserThunk, updateAmountUserThunk } from './authThunk';
 
 
 const initialState: IAuth = {
@@ -58,15 +58,15 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      .addCase(updateUserThunk.pending, (state) => {
+      .addCase(updateAmountUserThunk.pending, (state) => {
         state.loading = false;
         state.error = null;
       })
-      .addCase(updateUserThunk.fulfilled, (state, action: PayloadAction<IUser>) => {
+      .addCase(updateAmountUserThunk.fulfilled, (state, action: PayloadAction<IUser>) => {
         state.loading = false;
         state.auth = action.payload;
       })
-      .addCase(updateUserThunk.rejected, (state, action) => {
+      .addCase(updateAmountUserThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

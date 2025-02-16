@@ -6,6 +6,7 @@ export interface CartButtonProps {
 }
 
 export interface IUser {
+  _id?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -31,11 +32,12 @@ export interface IProduct{
   description: string;
   image: string;
   price: number;
-  category: string;
+  brand: string;
   color: string;
   ram: number;
   rating: number;
-  isStock: boolean
+  isStock: boolean;
+  countBuy: number
 }
 
 
@@ -65,7 +67,8 @@ export interface ICartState {
 
 export interface IProductState {
   allProducts: IProduct[] | null,
-  selectedProduct: IProduct | null
+  selectedProduct: IProduct | null,
+  productsForEdit: IProduct[] | null,
   isLoading: boolean;
   isError: string | null;
 }
@@ -76,3 +79,12 @@ export interface IOptionProduct{
   ram: number;
 }
 
+
+export interface IComment{
+  productId: string;
+  userId: string;
+  countStar: number;
+  description?: string;
+  avatar: string;
+  firstName: string;
+}
