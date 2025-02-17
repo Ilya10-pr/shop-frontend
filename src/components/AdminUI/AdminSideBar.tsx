@@ -15,11 +15,9 @@ const AdminSideBar = () => {
   const [product, setProduct] = useState<IProduct | null>(null);
 
 
-
-
-
-
-  return (isModal === "add" ? <AddProductModal setModal={setModal} product={product} setProduct={setProduct}/> : isModal === "edit" ? <EditProductModal setProduct={setProduct} setModal={setModal} /> :
+  return (isModal === "add" ? 
+                <AddProductModal setModal={setModal} product={product} setProduct={setProduct}/> :
+                 isModal === "edit" ? <EditProductModal setProduct={setProduct} setModal={setModal} /> :
     <Container className={style.admin}>
       <Button className={style.btn} onClick={() => setModal("add")}>Add product</Button>
       <Button className={style.btn} onClick={() => setModal("edit")}>Edit Product</Button>

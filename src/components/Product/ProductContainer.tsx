@@ -61,13 +61,13 @@ const ProductContainer = () => {
         <Card className={style.product}>
           <Card.Body>
             <div style={{
-    backgroundColor: 'transparent', // Прозрачный фон
-    borderRadius: '10px', // Закругленные углы
-    overflow: 'hidden', // Скрываем выходящие за пределы элементы
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Внешняя тень
-    border: '1px solid #e0e0e0', // Легкая рамка
-    padding: '8px', // Отступ внутри контейнера
-    width: '100%', // Ширина контейнера
+    backgroundColor: 'transparent', 
+    borderRadius: '10px', 
+    overflow: 'hidden', 
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+    border: '1px solid #e0e0e0', 
+    padding: '8px',  
+    width: '100%', 
     marginBottom: 10
   }}>
             <Card.Img variant="top" src={product.image} />
