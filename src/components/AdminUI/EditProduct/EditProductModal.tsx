@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/store";
 import { IProduct } from "../../../types/types";
 import { setProductsForEdit } from "../../../store/product/productsSlice";
 import { IoClose } from "react-icons/io5";
+import { deleteProductThunk } from "../../../store/product/productsThunk";
+import toast from "react-hot-toast";
 
 const EditProductModal: FC<{setModal: (option: string) => void, setProduct: (product: IProduct | null) => void}> = ({setModal, setProduct}) => {
   const [name, setName] = useState("")
@@ -25,16 +27,20 @@ const EditProductModal: FC<{setModal: (option: string) => void, setProduct: (pro
     setModal("add")
   }
 
-  const deleteProduct = (productId: string) => {
-
+  const deleteProduct = async (productId: string) => {
+    const response = await dispatch(deleteProductThunk(productId)).unwrap()
+    if(response){
+      setModal("")
+      toast.success("Product was successfully deleted")
+      return
+    }
+    toast.error("Error! Product wasn`t deleted, try again later.")
   }
-
 
   const closeModal = () => {
     setModal("")
     setProduct(null)
   }
-
 
   return (
     <div className={style.modal}>

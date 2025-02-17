@@ -28,7 +28,7 @@ const ProductItem: FC = memo(() => {
       maxWidth: '720px',
       }}>
       <Row>
-        {allProducts.map((product) => (
+        {allProducts?.map((product) => (
           <Col key={product._id} xs={12} sm={6} md={4} lg={4}  className="mb-4">
             <ProductCard product={product} />
           </Col>

@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getProductById, getProducts, getProductsByOption, updateCountBuyProduct, updateRatingProduct } from "../../services/ProductServices";
+import { createProduct, deleteProduct, getProductById, getProducts, getProductsByOption, updateCountBuyProduct, updateProduct, updateRatingProduct } from "../../services/ProductServices";
 import { IOptionProduct, IProduct } from "../../types/types";
 import { getCartUserThunk } from "../cart/cartThunk";
+import { IFormEditProduct } from "../../components/AdminUI/AddProduct/AddProductModal";
 
 
 
@@ -38,6 +39,34 @@ export const updateRatingProductThunk = createAsyncThunk(
       dispatch(getCartUserThunk())
     }
     return response 
+  }
+)
+
+export const updateProductThunk = createAsyncThunk(
+  "products/updateProductThunk",
+  async(payload: {productData: IFormEditProduct, productId: string}, {dispatch}) => {
+    const {productData, productId} = payload
+    const response = await updateProduct(productData, productId)
+    // await dispatch(getProductsThunk())
+    return response
+  }
+)
+
+export const createProductThunk = createAsyncThunk(
+  "products/createProductThunk",
+  async(payload: IFormEditProduct, {dispatch}) => {
+    const response = await createProduct(payload)
+    await dispatch(getProductsThunk())
+    return response
+  }
+)
+
+export const deleteProductThunk = createAsyncThunk(
+  "products/deleteProduct",
+  async(productId: string, {dispatch}) => {
+    const response = await deleteProduct(productId)
+    await dispatch(getProductsThunk())
+    return response
   }
 )
 
