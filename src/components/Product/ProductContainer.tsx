@@ -15,21 +15,12 @@ import { getCommentsOfUsers } from "../../services/CommentServices";
 
 const ProductContainer = () => {
 
-  const params = useParams();
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const params = useParams();
+  
+  const product = useAppSelector((state) => state.products.selectedProduct || null)
 
-  const product = useAppSelector((state) => {
-    if (state.products.selectedProduct) {
-      return state.products.selectedProduct
-    }
-    return null
-  })
-
-  const {data: comments} = useQuery({
-        queryKey: ['comments'],
-        queryFn: () => getCommentsOfUsers()
-        });
 
   useEffect(() => {
     if (params.id) {
@@ -52,7 +43,6 @@ const ProductContainer = () => {
     const response = await dispatch(getProductsByOptionThunk(payload)).unwrap()
     navigate(`/products/${response._id}`)
   }
-
 
 
   return (
@@ -114,12 +104,7 @@ const ProductContainer = () => {
         </Container>
       </Container>
       <Container>
-        {comments?.map((comment) => {
-          if(comment.productId === product._id) {
-            return <Comment comment={comment}/>
-          }
-        }
-        )}
+      <Comment productId={product._id}/>
       </Container>
     </Container>
 

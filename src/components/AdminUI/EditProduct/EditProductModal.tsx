@@ -35,10 +35,10 @@ const EditProductModal: FC<{setModal: (option: string) => void, setProduct: (pro
       return
     }
     toast.error("Error! Product wasn`t deleted, try again later.")
-  }
-
-  const closeModal = () => {
-    setModal("")
+  }   
+                                                                                                  
+  const closeModal = () => {        
+    setModal("")        
     setProduct(null)
   }
 
