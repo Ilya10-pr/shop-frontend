@@ -1,26 +1,17 @@
-import { Container, Image } from "react-bootstrap";
+import { Button, Container, Image, Form } from "react-bootstrap";
 import style from "./Product.module.scss"
-import { FC, memo, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { IComment } from "../../types/types";
 import { useAppSelector } from "../../store/store";
+import { MdDelete } from "react-icons/md";
 
-export interface ICommentWS {
-  _id: string;
-  productId: string;
-  avatar: string;
-  firstName:string;
-  countStar?: number;
-  comment: string;
-  isAdmin: boolean;
-  createdAt: Date,
-  updatedAt: Date,
-}
+
 
 
 
 const Comment: FC<{productId: string}> = ({productId}) => {
 
-  const [comments, setComments] = useState<ICommentWS[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
   const [newComment, setNewComment] = useState("");
 
   const isAuth = useAppSelector((state) => state.user.auth || null)
@@ -28,15 +19,12 @@ const Comment: FC<{productId: string}> = ({productId}) => {
   
  
   useEffect(() => {
-    // Создаем WebSocket-соединение
     const ws = new WebSocket(`ws://localhost:3000/ws/comments`);
 
-    // Обработка открытия соединения
     ws.onopen = () => {
-      console.log("WebSocket соединение установлено");
+      console.log("WebSocket connection is successful");
     };
 
-    // Обработка сообщений от сервера
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
@@ -49,14 +37,6 @@ const Comment: FC<{productId: string}> = ({productId}) => {
           setComments((prevComments) => [...prevComments, message.data]);
           break;
 
-        case "UPDATED_COMMENT":
-          setComments((prevComments) =>
-            prevComments.map((comment) =>
-              comment._id === message.data._id ? message.data : comment
-            )
-          ); 
-          break;
-
         case "DELETED_COMMENT":
           setComments((prevComments) =>
             prevComments.filter((comment) => comment._id !== message.data.commentId)
@@ -64,21 +44,18 @@ const Comment: FC<{productId: string}> = ({productId}) => {
           break;
 
         default:
-          console.log("Неизвестный тип сообщения:", message.type);
+          console.log("Unknown message type:", message.type);
       }
     };
 
-    // Обработка закрытия соединения
     ws.onclose = () => {
-      console.log("WebSocket соединение закрыто");
+      console.log("WebSocket connection closed");
     };
 
-    // Обработка ошибок
     ws.onerror = (error) => {
-      console.error("WebSocket ошибка:", error);
+      console.error("WebSocket error:", error);
     };
 
-    // Закрытие соединения при размонтировании компонента
     return () => {
       ws.close();
     };
@@ -100,8 +77,8 @@ const Comment: FC<{productId: string}> = ({productId}) => {
             productId,
             firstName: isAuth.firstName,
             avatar: isAuth.avatar,
-            userId: isAuth._id, // Замените на реальный ID пользователя
-            comment: newComment,
+            userId: isAuth._id,
+            text: newComment,
             isAdmin: isAuth.role === "user" ? true : false,
           },
         })
@@ -110,21 +87,6 @@ const Comment: FC<{productId: string}> = ({productId}) => {
     };
   };
 
-  const editComment = (commentId: string, newText: string) => {
-    const ws = new WebSocket(`ws://localhost:3000/ws/comments`);
-
-    ws.onopen = () => {
-      ws.send(
-        JSON.stringify({
-          type: "EDIT_COMMENT",
-          payload: {
-            commentId,
-            text: newText,
-          },
-        })
-      );
-    };
-  };
 
   const deleteComment = (commentId: string) => {
     const ws = new WebSocket(`ws://localhost:3000/ws/comments`);
@@ -142,38 +104,30 @@ const Comment: FC<{productId: string}> = ({productId}) => {
   };
 
   return (<>{comments.map((comment) => (
-    <Container className={style.commentUser}>
+    <Container className={comment.isAdmin ? style.commentAdmin : style.commentUser}>
           <Image className={style.avatar} src={comment.avatar} roundedCircle />
-          <div style={{display: "block", position: "relative", bottom: 57, left: 65, fontWeight: "bold"}}>{comment.isAdmin ? "Admin" : comment.firstName}</div>
-          <Container style={{display: "inline", 
-                            position: "relative",
-                            bottom: 88,
-                            left: 126}}>
+          <div className={comment.isAdmin ? style.admin : style.user }>{comment.isAdmin ? "Admin" : comment.firstName}</div>
+          <div className={style.starsContainer}>
             {comment.isAdmin ? null : Array.from({ length: comment.countStar || 0}, (_, index) => (
               <span
                 key={index}
-                style={{
-                  fontSize: "1.5rem",
-                  color: "gold"
-                }}
+                className={style.star}
               >
                 ★
               </span>
             ))}
-          </Container>
-          <div style={{display: "block",position: "relative",
-    left: 65,
-    bottom: 95}}>{comment.comment}</div>
-
+          </div>
+          <div className={comment.isAdmin ? style.adminText : style.userText }>{comment.text}</div>
+          <button onClick={() => deleteComment(comment._id as string)}>
+            <MdDelete />
+          </button>
         </Container>
   ))}
-        
-        <textarea
-        value={newComment}
-        onChange={(e) => setNewComment(e.target.value)}
-        placeholder="Enter the comment"
-      />
-      <button onClick={addComment}>Send</button></>
+          <div style={{textAlign: "center", fontWeight: "bold"}}>Leave a comment
+          <Form.Control style={{border: "0.5px solid", marginBottom: 10}} value={newComment} onChange={(event) => setNewComment(event?.target.value)} />
+          <Button className={style.commentBtn} onClick={addComment}>Send feedback</Button>
+          </div>
+</>
   )
 
 }

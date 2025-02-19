@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../store/store';
 import { Badge, Col, Image } from 'react-bootstrap';
 import style from "./NavBar.module.scss"
+import { useTranslation } from 'react-i18next';
 
 
 const NavBar = () => {
+  const {t, i18n} = useTranslation()
 
   const isAuth = useAppSelector((state) => {
     if (state.user.auth) {
@@ -24,6 +26,12 @@ const NavBar = () => {
     return 0
   })
 
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng)
+  }
+
+
+ 
 
 
   return <Navbar collapseOnSelect className={style.bg}>
@@ -32,7 +40,7 @@ const NavBar = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto">
-          <Nav.Link as={Link} to="/">Home</Nav.Link>
+          <Nav.Link as={Link} to="/">{t("Home")}</Nav.Link>
           <Nav.Link as={Link} to="/products">All products</Nav.Link>
           <Nav.Link as={Link} to="/about">About us</Nav.Link>
           <NavDropdown className={style.dropdown} title="Brands">
@@ -64,6 +72,9 @@ const NavBar = () => {
         </Nav>
       </Navbar.Collapse>
     </Container>
+    <button onClick={() => changeLanguage('en')}>English</button>
+    <button onClick={() => changeLanguage('ru')}>Русский</button>
+    
   </Navbar>
 }
 

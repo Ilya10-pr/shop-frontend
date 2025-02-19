@@ -5,6 +5,7 @@ import App from './App.tsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import store from './store/store.ts';
+import "./i18n.ts"
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById('root')!).render(

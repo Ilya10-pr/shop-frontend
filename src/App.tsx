@@ -25,8 +25,12 @@ const App = () => {
     dispatch(authMeThunk())
   })
 
+
+
+
   return (
     <Layout>
+
       
       <Routes>
         <Route path="/" element={<Home />} />

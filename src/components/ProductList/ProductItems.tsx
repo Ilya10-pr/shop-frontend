@@ -17,7 +17,7 @@ const ProductItem: FC = memo(() => {
   if(isLoading){
     return <div>Loading...</div>
   } 
-  if(!allProducts){
+  if(allProducts?.length === 0){
     return <div>Not found</div>
   }
 

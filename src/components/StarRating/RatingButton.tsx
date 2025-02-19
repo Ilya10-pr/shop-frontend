@@ -39,10 +39,10 @@ const RatingButton: FC<{ productId: string, user: IUser }> = ({ productId, user 
       userId: user._id as string,
       productId: productId,
       countStar: rating,
-      description: comment,
+      text: comment,
       avatar: user.avatar as string,
-      firstName: user.firstName
-
+      firstName: user.firstName,
+      isAdmin: user.role === "user" ? false : true
     }
     dispatch(updateRatingProductThunk(payload))
     mutation.mutateAsync(data)

@@ -14,7 +14,7 @@ export interface IUser {
   avatar?: string;
   role?: string;
   token?:string;
-  productCount: number;
+  productCount?: number;
   amount: number
 }
 
@@ -81,10 +81,14 @@ export interface IOptionProduct{
 
 
 export interface IComment{
-  productId: string;
+  _id?: string;
   userId: string;
-  countStar: number;
-  description?: string;
+  productId: string;
   avatar: string;
-  firstName: string;
+  firstName:string;
+  countStar?: number;
+  text: string;
+  isAdmin: boolean;
+  createdAt?: Date,
+  updatedAt?: Date,
 }

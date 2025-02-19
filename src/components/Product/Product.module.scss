@@ -7,24 +7,74 @@
     padding: 10px;
     box-shadow: inset 0 0 10px rgb(70, 70, 70);
     background-color: white;
-
+    .commentAdmin,
+    .commentUser {
+      display: flex;
+      align-items: flex-start;
+      padding: 10px;
+      border-bottom: 0.5px solid rgb(70, 70, 70);
+      height: 100%;
+    }
     .commentAdmin{
-      max-height: 80px;
-      padding: 5px;
-      border-bottom: 0.5px solid rgb(70, 70, 70);;
-      margin-left: 30px;
+      flex-direction: row-reverse;
     }
     .commentUser{
-      max-height: 100px;
-      padding: 10px;
-      border-bottom: 0.5px solid rgb(70, 70, 70);;
-
-      .avatar{
-        width: 60px;
-        height: 60px;
-      }
+      flex-direction: row;
+    }
+    .avatar {
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0; /* Аватар не сжимается */
+      margin-right: 10px; /* Отступ между аватаром и именем для пользователя */
+      margin-left: 10px; /* Отступ между аватаром и именем для администратора */
+    }
+    .adminText,
+    .userText {
+      flex: 1; /* Текст занимает всё доступное пространство */
+      white-space: nowrap; /* Текст не переносится на новую строку */
+      overflow: hidden; /* Скрываем текст, выходящий за пределы */
+      text-overflow: ellipsis; /* Добавляем многоточие, если текст не помещается */
+      margin-right: 10px; /* Отступ между текстом и именем */
     }
 
+    .adminText {
+      text-align: right; /* Текст начинается справа */
+      margin-left: 10px; /* Отступ слева для текста администратора */
+    }
+    .userText {
+      text-align: left; /* Текст начинается слева */
+      margin-right: 10px; /* Отступ справа для текста пользователя */
+    }
+    .admin,
+    .user {
+      font-weight: bold;
+      margin-right: 10px; /* Отступ между именем и текстом для пользователя */
+      margin-left: 10px; /* Отступ между именем и текстом для администратора */
+    }
+    .starsContainer {
+      display: inline;
+      position: relative;
+      bottom: 8px;
+      right: 10px;
+    }
+    
+    /* Стили для звёздочек */
+    .star {
+      font-size: 1.5rem;
+      color: gold;
+    }
+
+
+    .commentBtn{
+      background-color: #6E473B;
+      border-color: #6E473B;
+      margin: 0 auto;
+      &:hover{
+        background-color: #5e3c32;
+      }
+    }
+    
+    
   .wrapper{
     display: flex;
     border-bottom: 0.5px solid rgba(88, 88, 88, 0.5);
@@ -97,3 +147,8 @@
 }
 
 
+// style={{display: "block", position: "relative", bottom: 57, left: 65, fontWeight: "bold"}} //name
+
+// style={{display: "block",position: "relative", // text
+//   left: 65,
+//   bottom: 85}}
