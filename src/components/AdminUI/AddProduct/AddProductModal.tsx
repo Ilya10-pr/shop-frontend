@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch } from "../../../store/store";
 import { createProductThunk, updateProductThunk } from "../../../store/product/productsThunk";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export interface IFormEditProduct{
     name: string;
@@ -20,7 +21,7 @@ export interface IFormEditProduct{
 }
 
 const AddProductModal: FC<{setModal: (option: string) => void, setProduct: (product: IProduct | null) => void, product: IProduct | null}> = ({setModal, setProduct, product}) => {
-
+  const {t, i18n} = useTranslation()
   const dispatch = useAppDispatch()
   
   const {register,  handleSubmit} = useForm({
@@ -48,25 +49,28 @@ const AddProductModal: FC<{setModal: (option: string) => void, setProduct: (prod
       price: Number(data.price),
       ram: Number(data.ram)
     }
+    const response = await dispatch(createProductThunk(productData)).unwrap()
+    const error = i18n.language === "ru" ? "Ошибка! Попробуйте позже." : "Error! Try again later."
     if(product){ 
       console.log(product)
       const productId = product._id
       const response = await dispatch(updateProductThunk({productData, productId})).unwrap()
       if(response){
         setModal("")
-        toast.success("Product was successfully update");
+        toast.success("Successfully.");
         return
       }
-      toast.error("Error! Product wasn`t update, try again later.");
+      toast.error("Error! Try again later.");
       return
     }
-    const response = await dispatch(createProductThunk(productData)).unwrap()
+
     if(response){
       setModal("")
-      toast.success("Product was successfully add");
+      const success = i18n.language === "ru" ? "Успешно" : "Successfully"
+      toast.success(success);
       return
     }
-    toast.error("Error! Product wasn`t add, try again later.");
+    toast.error(error);
     return
     
   }
@@ -77,46 +81,46 @@ const AddProductModal: FC<{setModal: (option: string) => void, setProduct: (prod
         <button className={style.close} onClick={() => closeModal()}>
           <IoClose />
         </button>
-        <div className={style.title}>Describe the product</div>
+        <div className={style.title}>{t("Describe")}</div>
         <Form onSubmit={handleSubmit(sendProduct)}>
           <Form.Group className={style.item}>
-            <Form.Label>Name: </Form.Label>
+            <Form.Label>{t("NameProduct")}</Form.Label>
             <Form.Control  type="text" {...register("name", { required: true })}/>
           </Form.Group>
           <Form.Group className={style.item}>
-            <Form.Label>Description: </Form.Label>
+            <Form.Label>{t("Description")}</Form.Label>
             <Form.Control type="text"  {...register("description", { required: true })}/>
           </Form.Group>
           <Form.Group className={style.item}>
-            <Form.Label>Image: </Form.Label>
+            <Form.Label>{t("Image")}</Form.Label>
             <Form.Control type="text" {...register("image", { required: true })}/>
           </Form.Group>
           <Form.Group className={style.item}>
-            <Form.Label>Price: </Form.Label>
+            <Form.Label>{t("Price")}</Form.Label>
             <Form.Control type="number" {...register("price", { required: true })}/>
           </Form.Group>
           <Form.Group className={style.item}>
-            <Form.Label>Brand: </Form.Label>
+            <Form.Label>{t("Brand")}</Form.Label>
             <Form.Control type="text" {...register("brand", { required: true })}/>
           </Form.Group>
           <Form.Group className={style.item}>
-            <Form.Label>Color: </Form.Label>
+            <Form.Label>{t("Color")}</Form.Label>
             <Form.Control type="text" {...register("color", { required: true })}/>
           </Form.Group>
           <Form.Group className={style.item} controlId="exampleForm.ControlInput1">
-            <Form.Label>RAM: </Form.Label>
+            <Form.Label>{t("RAM")}</Form.Label>
             <Form.Control type="number" {...register("ram", { required: true })}/>
           </Form.Group>
           <Form.Group >
             <Form.Check
               className={style.checkbox}
               type="checkbox"
-              label="Availability"
+              label={t("Availability")}
               {...register("isStock")}
               onChange={(e) => console.log(e.target.checked)}
               />
           </Form.Group>
-          <Button type="submit" className={style.btn}>Add product</Button>
+          <Button type="submit" className={style.btn}>{t("Add")}</Button>
         </Form>
       </div>
     </div>

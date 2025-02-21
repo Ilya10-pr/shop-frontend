@@ -9,8 +9,10 @@ import { setProductsForEdit } from "../../../store/product/productsSlice";
 import { IoClose } from "react-icons/io5";
 import { deleteProductThunk } from "../../../store/product/productsThunk";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const EditProductModal: FC<{setModal: (option: string) => void, setProduct: (product: IProduct | null) => void}> = ({setModal, setProduct}) => {
+  const {t, i18n} = useTranslation()
   const [name, setName] = useState("")
   const dispatch = useAppDispatch()
 
@@ -29,12 +31,14 @@ const EditProductModal: FC<{setModal: (option: string) => void, setProduct: (pro
 
   const deleteProduct = async (productId: string) => {
     const response = await dispatch(deleteProductThunk(productId)).unwrap()
+    const success = i18n.language === "ru" ? "Успешно" : "Successfully"
+    const error = i18n.language === "ru" ? "Ошибка! Попробуйте позже." : "Error! Try again later."
     if(response){
       setModal("")
-      toast.success("Product was successfully deleted")
+      toast.success(success)
       return
     }
-    toast.error("Error! Product wasn`t deleted, try again later.")
+    toast.error(error)
   }   
                                                                                                   
   const closeModal = () => {        
@@ -49,7 +53,7 @@ const EditProductModal: FC<{setModal: (option: string) => void, setProduct: (pro
           <IoClose />
         </button>
         <div className={style.search}>
-          <div className={style.title}>Enter the product name</div>
+          <div className={style.title}>{t("Enter the product name")}</div>
           <Form.Control
             type="text"
             value={name}

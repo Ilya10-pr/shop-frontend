@@ -1,0 +1,38 @@
+.pagination {
+  display: flex;
+  justify-content: space-between; /* Центрируем пагинацию по горизонтали */
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+
+  /* Стили для элементов пагинации */
+  .pagination li {
+    margin: 0 5px;
+  }
+  
+  .pagination li a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #000000;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 2s ease;
+  }
+  
+  a:hover {
+    border-bottom: 1px solid;
+    font-weight: bold;
+  }
+  
+  /* Стили для активной страницы */
+  .pagination .active a {
+    font-weight: bold;
+  }
+  
+  /* Стили для отключённых кнопок (например, "Previous" на первой странице) */
+  .pagination .disabled a {
+    color: #ccc;
+    cursor: not-allowed;
+  }
+}

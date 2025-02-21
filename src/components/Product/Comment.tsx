@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { IComment } from "../../types/types";
 import { useAppSelector } from "../../store/store";
 import { MdDelete } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -13,6 +14,7 @@ const Comment: FC<{productId: string}> = ({productId}) => {
 
   const [comments, setComments] = useState<IComment[]>([]);
   const [newComment, setNewComment] = useState("");
+  const {t} = useTranslation()
 
   const isAuth = useAppSelector((state) => state.user.auth || null)
 
@@ -123,9 +125,9 @@ const Comment: FC<{productId: string}> = ({productId}) => {
           </button>
         </Container>
   ))}
-          <div style={{textAlign: "center", fontWeight: "bold"}}>Leave a comment
+          <div style={{textAlign: "center", fontWeight: "bold"}}>{t("Leave a comment")}
           <Form.Control style={{border: "0.5px solid", marginBottom: 10}} value={newComment} onChange={(event) => setNewComment(event?.target.value)} />
-          <Button className={style.commentBtn} onClick={addComment}>Send feedback</Button>
+          <Button className={style.commentBtn} onClick={addComment}>{t("Send feedback")}</Button>
           </div>
 </>
   )

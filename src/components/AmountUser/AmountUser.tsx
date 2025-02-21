@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../store/store';
 import { updateAmountUserThunk } from '../../store/auth/authThunk';
 import { Stack } from 'react-bootstrap';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 
 export interface IAmount{
@@ -13,6 +14,7 @@ export interface IAmount{
 }
 
 const AmountUser = () => {
+  const {t} = useTranslation()
 
   const {
     register,
@@ -34,11 +36,11 @@ const AmountUser = () => {
     <Stack className={style.cartAmount}>
       <Form onSubmit={handleSubmit(deposit)}>
         <Form.Group className="mb-3" controlId="formGroupEmail">
-          <Form.Label>Enter amount</Form.Label>
-          <Form.Control type="text" placeholder="amount" {...register("amount", { required: true })}/>
+          <Form.Label>{t("EnterDeposit")}</Form.Label>
+          <Form.Control type="text" placeholder={t("EnterDeposit")} {...register("amount", { required: true })}/>
         </Form.Group>
         <Button variant="primary" type="submit" className={style.btn}>
-          Deposit
+          {t("Deposit")}
         </Button>
       </Form>
     </Stack>

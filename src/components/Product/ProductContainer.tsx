@@ -10,6 +10,7 @@ import { IOptionProduct } from "../../types/types";
 import Comment from "./Comment";
 import { useQuery } from "@tanstack/react-query";
 import { getCommentsOfUsers } from "../../services/CommentServices";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -17,6 +18,7 @@ const ProductContainer = () => {
 
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const {t} = useTranslation()
   const params = useParams();
   
   const product = useAppSelector((state) => state.products.selectedProduct || null)
@@ -70,12 +72,12 @@ const ProductContainer = () => {
             <Container >
               {product.isStock ?
                 <>
-                  <Card.Title>In stock</Card.Title>
+                  <Card.Title>{t("Availability")}</Card.Title>
                   <IoMdCheckmark style={{ width: 25, height: 25, color: "green" }} />
                 </> :
                 <>
-                  <Card.Title>Out of stock</Card.Title>
-                  <Button className={style.btnOrder}>To order</Button>
+                  <Card.Title>{t("Unavailability")}</Card.Title>
+                  <Button className={style.btnOrder}>{t("Order")}</Button>
                 </>}
             </Container>
           </Card.Body>
@@ -84,13 +86,13 @@ const ProductContainer = () => {
           <Card.Title>{product.description}</Card.Title>
           <Container style={{ display: "flex", flexDirection: "column", gap: 1 }}>
             <Container className={style.color}>
-              <Card.Title>Color:</Card.Title>
+              <Card.Title>{t("Color")}</Card.Title>
               <Button onClick={() => selectColor({ name: product.name, ram: product.ram, color: "red" })} style={{ backgroundColor: 'red', borderColor: 'red' }}></Button>
               <Button onClick={() => selectColor({ name: product.name, ram: product.ram, color: "black" })} style={{ backgroundColor: 'black', borderColor: 'black' }}></Button>
               <Button onClick={() => selectColor({ name: product.name, ram: product.ram, color: "green" })} style={{ backgroundColor: 'green', borderColor: 'green' }}></Button>
             </Container>
             <Container className={style.ram}>
-              <Card.Title>RAM:</Card.Title>
+              <Card.Title>{t("RAM")}</Card.Title>
               <Button onClick={() => selectRam({ name: product.name, ram: 64, color: product.color })}>64</Button>
               <Button onClick={() => selectRam({ name: product.name, ram: 128, color: product.color })}>128</Button>
               <Button onClick={() => selectRam({ name: product.name, ram: 256, color: product.color })}>256</Button>
@@ -98,8 +100,8 @@ const ProductContainer = () => {
           </Container>
         </Container>
         <Container className={style.option}>
-          <Card.Title >{product.rating > 0 ? `Rating: ${product.rating}` : "No rating"}</Card.Title>
-          <Card.Title>Number of sales: {product.countBuy}</Card.Title>
+          <Card.Title >{product.rating > 0 ? `${t("Rating")}: ${product.rating}` : `${t("No rating")}`}</Card.Title>
+          <Card.Title>{t("Number of sales")} {product.countBuy}</Card.Title>
           {product.isStock ? <CartButton itemId={product._id} product={product} /> : null}
         </Container>
       </Container>

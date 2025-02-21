@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { IComment, IUser } from "../../types/types";
 import { createComment } from "../../services/CommentServices";
+import { useTranslation } from "react-i18next";
 
 
 
@@ -16,6 +17,7 @@ const RatingButton: FC<{ productId: string, user: IUser }> = ({ productId, user 
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [isModal, setIsModal] = useState<boolean>(false)
+  const {t} = useTranslation()
   const dispatch = useAppDispatch()
 
 
@@ -50,14 +52,14 @@ const RatingButton: FC<{ productId: string, user: IUser }> = ({ productId, user 
   };
 
   return (<>
-    <Button onClick={() => setIsModal(true)}>Leave a review</Button>
+    <Button onClick={() => setIsModal(true)}>{t("Leave a review")}</Button>
     {isModal ?
       <div className={style.modal}>
         <div className={style.modal_content}>
           <RatingStar rating={rating} setRating={setRating} />
-          <Form.Label>Leave a comment</Form.Label>
+          <Form.Label>{t("Leave a comment")}</Form.Label>
           <Form.Control value={comment} onChange={(event) => setComment(event?.target.value)} as="textarea" />
-          <Button style={{marginTop: 10}} onClick={() => sendRatingProduct(rating)}>Send feedback</Button>
+          <Button style={{marginTop: 10}} onClick={() => sendRatingProduct(rating)}>{t("Send feedback")}</Button>
         </div>
       </div> : null}
   </>

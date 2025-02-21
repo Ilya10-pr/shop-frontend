@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import enTranslation from './locales/en/translation.json';
-import ruTranslation from './locales/ru/translation.json';
+import enTranslation from './locales/enTranslation.json';
+import ruTranslation from './locales/ruTranslation.json';
 
 // Ресурсы с переводами
 const resources = {
@@ -26,7 +26,8 @@ i18n
       escapeValue: false, // Не экранировать HTML (если нужно)
     },
     detection: {
-      order: ['navigator'], // Определяем язык из браузера
+      order: ['localStorage', 'navigator'], // Сначала проверяем localStorage, затем язык браузера
+      caches: ['localStorage'], // Сохраняем язык в localStorage
     },
   });
 

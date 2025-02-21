@@ -33,6 +33,15 @@
     width: 40px;
     height: 40px;
     object-fit: cover; /* Сохраняет пропорции изображения */
+    flex-shrink: 0;
+  }
+
+  .lng{
+    margin-right: 5px;
+    button{
+      background-color: transparent;
+      color: white;
+    }
   }
 }
 

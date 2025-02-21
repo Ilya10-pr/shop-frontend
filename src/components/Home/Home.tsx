@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
+
+  const {t} = useTranslation()
   return (
     <div>
-        Hello! My name is Ilya and I am learning frontend now.
+        {t("Hello")}
     </div>
   )
 };

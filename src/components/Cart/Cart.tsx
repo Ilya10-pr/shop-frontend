@@ -4,12 +4,13 @@ import style from "./Cart.module.scss"
 import { GrClose } from "react-icons/gr";
 import { FC, memo} from "react";
 import { IProduct, IUser } from "../../types/types";
+import { useTranslation } from "react-i18next";
 
 
 
 
 const Cart: FC<{user: IUser, product: IProduct, deleteProduct: (productId: string) => void, buyProduct: (productId: string, productPrice: number) => void}> = memo(({user, product, deleteProduct, buyProduct}) => {
-
+  const {t} = useTranslation()
 
 
 
@@ -31,7 +32,7 @@ const Cart: FC<{user: IUser, product: IProduct, deleteProduct: (productId: strin
         <Container style={{ display: "flex", justifyContent: "space-between" }}>
           <Container>
             <RatingButton user={user} productId={product._id}/>
-            <Card.Title>{product.rating > 0 ? `Rating: ${product.rating}` : "No rating"}</Card.Title>
+            <Card.Title>{product.rating > 0 ? `${t("Rating")} ${product.rating}` : `${t("No rating")}`}</Card.Title>
           </Container>
           <Button
             style={{
@@ -47,7 +48,7 @@ const Cart: FC<{user: IUser, product: IProduct, deleteProduct: (productId: strin
             <GrClose style={{ width: 30, height: 30, color: "6E473B" }} />
           </Button>
         </Container>
-        <Button onClick={() => buyProduct(product._id, product.price)}>Buy</Button>
+        <Button onClick={() => buyProduct(product._id, product.price)}>{t("Buy")}</Button>
       </Container>
     </Container>
   )
